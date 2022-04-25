@@ -21,6 +21,24 @@ void AddEdgeZeros(const Mat& inputImage, Mat& outputImage, int edgeSize) {
     }
 }
 
+void AddEdgeClosest(const Mat& inputImage, Mat& outputImage, int edgeSize) {
+    AddEdgeZeros(inputImage, outputImage, edgeSize);
+
+    for (auto i = edgeSize; i < outputImage.cols - edgeSize; ++i) {
+        for (auto j = 0; j < edgeSize; ++j) {
+            outputImage.at<Vec3b>(j, i) = outputImage.at<Vec3b>(edgeSize, i);
+            outputImage.at<Vec3b>(outputImage.rows - edgeSize + j, i) = outputImage.at<Vec3b>(outputImage.rows - edgeSize - 1, i);
+        }
+    }
+
+    for (auto i = 0; i < outputImage.rows; ++i) {
+        for (auto j = 0; j < edgeSize; ++j) {
+            outputImage.at<Vec3b>(i, j) = outputImage.at<Vec3b>(i, edgeSize);
+            outputImage.at<Vec3b>(i, outputImage.cols - edgeSize + j) = outputImage.at<Vec3b>(i, outputImage.cols - edgeSize - 1);
+        }
+    }
+}
+
 void ReliefTransform(const Mat& inputImage, Mat& outputImage) {
     AddEdgeZeros(inputImage, outputImage);
     const auto temp = outputImage.clone();
@@ -66,7 +84,7 @@ void AddGreyColor(const Mat& inputImage, Mat& outputImage) {
 }
 
 void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& transMatrix) {
-    AddEdgeZeros(inputImage, outputImage, transMatrix.rows / 2 - (transMatrix.cols % 2 == 0));
+    AddEdgeClosest(inputImage, outputImage, transMatrix.rows / 2 - (transMatrix.cols % 2 == 0));
     const auto tempImage = outputImage.clone();
 
     for (auto i = 1; i < outputImage.rows - 1; ++i) {
