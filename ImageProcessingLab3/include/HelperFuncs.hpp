@@ -9,3 +9,5 @@ void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& tran
 
 void AddEdgeZeros(const Mat& inputImage, Mat& outputImage, int edgeSize = 1);
 void AddEdgeClosest(const Mat& inputImage, Mat& outputImage, int edgeSize = 1);
+
+void RemoveEdge(const Mat& inputImage, Mat& outputImage, int edgeSize = 1);
