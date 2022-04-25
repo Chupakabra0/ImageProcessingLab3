@@ -24,7 +24,7 @@
 
 В примерах будут использованы две матрицы тиснения:
 
-![Матрицы](https://latex.codecogs.com/png.image?\dpi{110}\begin{align*}&space;M_{1}&space;=&space;\begin{pmatrix}&space;&space;&space;&space;&space;&space;1&space;&&space;0&space;&&space;0&space;&space;\\&space;&space;&space;&space;&space;0&space;&&space;0&space;&&space;0&space;&space;\\&space;&space;&space;&space;&space;0&space;&&space;0&space;&&space;-1&space;\\&space;&space;&space;&space;\end{pmatrix}&space;&space;&space;&space;&&&space;M_{2}&space;=&space;\begin{pmatrix}&space;&space;&space;&space;&space;&space;0&space;&&space;0&space;&&space;0&space;&space;\\&space;&space;&space;&space;&space;0&space;&&space;1&space;&&space;0&space;&space;\\&space;&space;&space;&space;&space;0&space;&&space;0&space;&&space;-1&space;\\&space;&space;&space;&space;\end{pmatrix}\end{align*})
+![Матрицы](https://user-images.githubusercontent.com/47476146/165101287-8a760183-d751-4995-81fc-ad534f121f8b.png)
 
 Также важным вопросом является решение **проблемы свёртки на краях изображения**. Игнорирование этой проблемы недопустимо, так как размер результирующей фотографии будет уменьшаться.
 
