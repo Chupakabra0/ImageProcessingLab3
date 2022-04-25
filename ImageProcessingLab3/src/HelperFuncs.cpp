@@ -53,6 +53,18 @@ void EngraveTransform(const Mat& inputImage, Mat& outputImage) {
     }
 }
 
+void AddGreyColor(const Mat& inputImage, Mat& outputImage) {
+    outputImage = inputImage.clone();
+
+    for (auto i = 0; i < outputImage.rows; ++i) {
+        for (auto j = 0; j < outputImage.cols; ++j) {
+            outputImage.at<Vec3b>(i, j)[0] += 128;
+            outputImage.at<Vec3b>(i, j)[1] += 128;
+            outputImage.at<Vec3b>(i, j)[2] += 128;
+        }
+    }
+}
+
 void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& transMatrix) {
     AddEdgeZeros(inputImage, outputImage, transMatrix.rows / 2 - (transMatrix.cols % 2 == 0));
     const auto tempImage = outputImage.clone();

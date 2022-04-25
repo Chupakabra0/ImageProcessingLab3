@@ -5,6 +5,8 @@ std::unique_ptr<argparse::ArgumentParser> InitArgs(int argc, char** argv) {
     auto parser = std::make_unique<argparse::ArgumentParser>();
     parser->add_argument("-f", "--filepath")
         .required().help("specify the input image file");
+    parser->add_argument("-g", "--grey")
+        .default_value(false).implicit_value(true).help("adds grey color to all pixels");
 
     try {
         parser->parse_args(argc, argv);
@@ -28,13 +30,16 @@ int main(int argc, char** argv) {
 
         auto transMatrix = std::make_unique<Mat>(3, 3, CV_64FC1, 0.0);
 
-        transMatrix->at<double>(1, 1) = 1.0;
+        transMatrix->at<double>(0, 0) = 1.0;
         transMatrix->at<double>(2, 2) = -1.0;
 
         imshow("Before", *oldImage);
         waitKey();
 
         UniversalTransform(*oldImage, *newImage, *transMatrix);
+        if (argParser->is_used("-g")) {
+            AddGreyColor(*newImage, *newImage);
+        }
 
         imshow("After:", *newImage);
         waitKey();
