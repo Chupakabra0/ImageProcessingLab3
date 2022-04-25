@@ -52,3 +52,24 @@ void EngraveTransform(const Mat& inputImage, Mat& outputImage) {
         }
     }
 }
+
+void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& transMatrix) {
+    AddEdgeZeros(inputImage, outputImage, transMatrix.rows / 2 - (transMatrix.cols % 2 == 0));
+    const auto tempImage = outputImage.clone();
+
+    for (auto i = 1; i < outputImage.rows - 1; ++i) {
+        for (auto j = 1; j < outputImage.cols - 1; ++j) {
+            auto& curr = outputImage.at<Vec3b>(i, j);
+            curr = 0;
+
+            for (auto k = 0; k < transMatrix.rows; ++k) {
+                for (auto l = 0; l < transMatrix.cols; ++l) {
+                    for (auto m = 0; m < 3; ++m) {
+                        curr[m] += static_cast<uchar>(transMatrix.at<double>(k, l)
+                            * static_cast<double>(tempImage.at<Vec3b>(i - 1 + k, j - 1 + l)[m]));
+                    }
+                }
+            }
+        }
+    }
+}
