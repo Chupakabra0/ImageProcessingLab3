@@ -109,7 +109,7 @@ void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& tran
 
             for (auto k = 0; k < transMatrix.rows; ++k) {
                 for (auto l = 0; l < transMatrix.cols; ++l) {
-                    for (auto m = 0; m < 3; ++m) {
+                    for (auto m = 0; m < curr.rows; ++m) {
                         curr[m] += static_cast<uchar>(transMatrix.at<double>(k, l)
                             * static_cast<double>(outputImage.at<Vec3b>(i - 1 + k, j - 1 + l)[m]));
                     }
