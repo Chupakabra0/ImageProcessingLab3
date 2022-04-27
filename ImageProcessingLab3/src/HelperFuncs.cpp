@@ -12,6 +12,11 @@ int Calmp(int value, int min = 0, int max = 255) {
 }
 
 void AddEdgeZeros(const Mat& inputImage, Mat& outputImage, int edgeSize) {
+    if (edgeSize == 0) {
+        outputImage = inputImage;
+        return;
+    }
+
     outputImage = Mat(inputImage.rows + edgeSize * 2, inputImage.cols + edgeSize * 2, inputImage.type(), Scalar(0, 0, 0));
 
     for (auto i = edgeSize; i < outputImage.rows - edgeSize; ++i) {
@@ -22,6 +27,11 @@ void AddEdgeZeros(const Mat& inputImage, Mat& outputImage, int edgeSize) {
 }
 
 void AddEdgeClosest(const Mat& inputImage, Mat& outputImage, int edgeSize) {
+    if (edgeSize == 0) {
+        outputImage = inputImage;
+        return;
+    }
+
     AddEdgeZeros(inputImage, outputImage, edgeSize);
 
     for (auto i = edgeSize; i < outputImage.cols - edgeSize; ++i) {
@@ -40,6 +50,11 @@ void AddEdgeClosest(const Mat& inputImage, Mat& outputImage, int edgeSize) {
 }
 
 void RemoveEdge(const Mat& inputImage, Mat& outputImage, int edgeSize) {
+    if (edgeSize == 0) {
+        outputImage = inputImage;
+        return;
+    }
+
     outputImage = Mat(inputImage.rows - 2 * edgeSize, inputImage.cols - 2 * edgeSize, inputImage.type(), Scalar(0, 0, 0));
 
     for (auto i = 0; i < outputImage.rows; ++i) {
