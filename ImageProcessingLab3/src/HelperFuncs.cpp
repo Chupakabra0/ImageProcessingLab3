@@ -99,11 +99,12 @@ void AddGreyColor(const Mat& inputImage, Mat& outputImage) {
 }
 
 void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& transMatrix) {
-    AddEdgeClosest(inputImage, outputImage, transMatrix.rows / 2 - (transMatrix.cols % 2 == 0));
+    const auto edgeSize = transMatrix.rows / 2;
+    AddEdgeClosest(inputImage, outputImage, edgeSize);
     auto temp = outputImage.clone();
 
-    for (auto i = 1; i < outputImage.rows - 1; ++i) {
-        for (auto j = 1; j < outputImage.cols - 1; ++j) {
+    for (auto i = edgeSize; i < outputImage.rows - edgeSize; ++i) {
+        for (auto j = edgeSize; j < outputImage.cols - edgeSize; ++j) {
             auto& curr = temp.at<Vec3b>(i, j);
             curr = 0;
 
@@ -111,12 +112,12 @@ void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& tran
                 for (auto l = 0; l < transMatrix.cols; ++l) {
                     for (auto m = 0; m < curr.rows; ++m) {
                         curr[m] += static_cast<uchar>(transMatrix.at<double>(k, l)
-                            * static_cast<double>(outputImage.at<Vec3b>(i - 1 + k, j - 1 + l)[m]));
+                            * static_cast<double>(outputImage.at<Vec3b>(i - edgeSize + k, j - edgeSize + l)[m]));
                     }
                 }
             }
         }
     }
 
-    RemoveEdge(temp, outputImage);
+    RemoveEdge(temp, outputImage, edgeSize);
 }
