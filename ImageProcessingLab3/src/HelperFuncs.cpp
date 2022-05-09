@@ -120,17 +120,28 @@ void UniversalTransform(const Mat& inputImage, Mat& outputImage, const Mat& tran
 
     for (auto i = edgeSize; i < outputImage.rows - edgeSize; ++i) {
         for (auto j = edgeSize; j < outputImage.cols - edgeSize; ++j) {
-            auto& curr = temp.at<Vec3b>(i, j);
-            curr = 0;
+            Vec<int, 3> curr = 0;
 
             for (auto k = 0; k < transMatrix.rows; ++k) {
                 for (auto l = 0; l < transMatrix.cols; ++l) {
                     for (auto m = 0; m < curr.rows; ++m) {
-                        curr[m] += static_cast<uchar>(transMatrix.at<double>(k, l)
+                        curr[m] += static_cast<int>(transMatrix.at<double>(k, l)
                             * static_cast<double>(outputImage.at<Vec3b>(i - edgeSize + k, j - edgeSize + l)[m]));
                     }
                 }
             }
+
+            // TODO: remove it to another method
+            for (auto m = 0; m < curr.rows; ++m) {
+                if (curr[m] > std::numeric_limits<uchar>::max()) {
+                    curr[m] = std::numeric_limits<uchar>::max();
+                }
+                if (curr[m] < std::numeric_limits<uchar>::min()) {
+                    curr[m] = std::numeric_limits<uchar>::min();
+                }
+            }
+
+            temp.at<Vec<uchar, 3>>(i, j) = Vec<uchar, 3>(curr);
         }
     }
 
